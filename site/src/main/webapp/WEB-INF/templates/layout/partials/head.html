@@ -7,19 +7,23 @@
         <title th:inline="text" th:include="${templateName} :: title" />
     </title>
     
-    <meta name="description" content="Broadleaf Demo Store" />
-    <meta name="author" content="Broadleaf Commerce" />
+    <meta name="description" content="Confesser.me website" />
+    <meta name="author" content="Hafedh" />
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />   
     <meta name="viewport" content="width=device-width" />
     
     <blc:bundle name="style.css" 
                 mapping-prefix="/css/"
-                files="style.css,
-                       jquery.rating.css" />
+                files="
+                       jquery.rating.css,
+                       freelancer.min.css,
+                       bootstrap.min.css,
+                       font-awesome.min.css" />
     
     <link rel="stylesheet" th:unless="${#strings.isEmpty(additionalCss)}" />
-    
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"></link>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css"></link>
 
     <script blc:src="@{/js/libs/modernizr-2.5.3.min.js}"></script>
     
