@@ -20,65 +20,6 @@
 
 	<property name="runtime.environment" value="development" />
 
-	<target name="jetty-demo-no-db">
-		<delete dir="war/WEB-INF/lib" />
-		<artifact:mvn mavenHome="${maven.home}" fork="true">
-			<jvmarg value="-XX:MaxPermSize=256M" />
-			<jvmarg value="-Xmx512M" />
-			<jvmarg value="-Xdebug" />
-			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n" />
-			<jvmarg value="-javaagent:${spring.instrument.path}" />
-			<jvmarg value="-Druntime.environment=${runtime.environment}" />
-			<arg value="compile" />
-			<arg value="war:exploded" />
-			<arg value="jetty:run" />
-		</artifact:mvn>
-	</target>
-
-	<target name="jetty-demo">
-		<delete dir="war/WEB-INF/lib" />
-		<artifact:mvn mavenHome="${maven.home}" fork="true">
-			<jvmarg value="-XX:MaxPermSize=256M" />
-			<jvmarg value="-Xmx512M" />
-			<jvmarg value="-Xdebug" />
-			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n" />
-			<jvmarg value="-javaagent:${spring.instrument.path}" />
-			<jvmarg value="-Druntime.environment=${runtime.environment}" />
-			<arg value="compile" />
-			<arg value="war:exploded" />
-			<arg value="jetty:run" />
-		</artifact:mvn>
-	</target>
-
-	<target name="jetty-demo-jrebel" depends="start-db">
-		<delete dir="war/WEB-INF/lib" />
-		<artifact:mvn mavenHome="${maven.home}" fork="true">
-			<jvmarg value="-XX:MaxPermSize=256M" />
-			<jvmarg value="-Xmx512M" />
-			<jvmarg value="-Xdebug" />
-			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n" />
-			<jvmarg value="-Drebel.root=${project.root}" />
-			<jvmarg value="-Dlogs.dir=${logs.dir}" />
-			<jvmarg value="-noverify" />
-			<jvmarg value="-javaagent:${jrebel.path}" />
-			<jvmarg value="-javaagent:${spring.instrument.path}" />
-			<jvmarg value="-Druntime.environment=${runtime.environment}" />
-			<arg value="compile" />
-			<arg value="war:exploded" />
-			<arg value="jetty:run" />
-		</artifact:mvn>
-	</target>
-
-	<target name="jetty-stop">
-		<artifact:mvn mavenHome="${maven.home}" fork="true">
-			<jvmarg value="-XX:MaxPermSize=256M" />
-			<jvmarg value="-Xmx512M" />
-			<arg value="jetty:stop" />
-		</artifact:mvn>
-	</target>
-
-	<target name="stop-all" depends="jetty-stop, stop-db" />
-
 	<!-- Project Reference Targets -->
 	<!-- build the application and create the war artifact -->
 	<target name="build-app">
@@ -89,122 +30,58 @@
 		</artifact:mvn>
 	</target>
 
-	<target name="start-db">
-		<!-- Grab the HSQLDB jar and add it to the classpath -->
-		<artifact:dependencies filesetId="warDeps">
-			<dependency groupId="org.hsqldb" artifactId="hsqldb" version="2.3.1" />
-		</artifact:dependencies>
-		<path id="build.runtime.classpath">
-			<fileset refid="warDeps" />
-		</path>
 
-		<echo message="Starting Data Base..." />
-		<java fork="true" spawn="true" classname="org.hsqldb.Server" classpathref="build.runtime.classpath">
-			<arg line="-database.0 file:data/broadleaf -dbname.0 broadleaf" />
-		</java>
-	</target>
 
-	<target name="stop-db">
-		<echo message="Execute SQL on new Data Base..." />
-		<!-- Grab the HSQLDB jar and add it to the classpath -->
-		<artifact:dependencies filesetId="warDeps">
-			<dependency groupId="org.hsqldb" artifactId="hsqldb" version="2.3.1" />
-		</artifact:dependencies>
-		<path id="build.runtime.classpath">
-			<fileset refid="warDeps" />
-		</path>
-		<sql autocommit="true" print="true" classpathref="build.runtime.classpath" driver="org.hsqldb.jdbcDriver" url="jdbc:hsqldb:hsql://localhost/broadleaf;ifexists=true" userid="sa" password="">
-			<transaction>SHUTDOWN</transaction>
-		</sql>
-		<echo message="SQL Executed on data base..." />
-	</target>
-	
-	
-	
-	<!-- Deploy to Tomcat -->
-		<target name="deploy-tomcat" >
-			<echo message="/opt/dev/tools/tomcat/site"/>
-			<property name="warFile" location="target/ROOT.war"/>
-			<delete dir="/opt/dev/tools/tomcat/site/webapps/ROOT" quiet="true"/>
-			<delete dir="/opt/dev/tools/tomcat/site/webapps/ROOT.war" quiet="true"/>
-			<copy todir="/opt/dev/tools/tomcat/site/webapps" file="${warFile}" overwrite="true"/>
-			<echo message="${warFile}"/>
-		</target>
-		<target name="build-and-deploy-rayondart" depends="build-app">
-			<exec executable="/bin/bash">
-			    <arg value="/opt/dev/projects/ATEC/Rayondart/build-env/build-script/dev/rayondart/stopRdrSite.sh"/>
-			 </exec>
-            <echo message="/opt/dev/tools/tomcat/site"/>
-            <property name="warFile" location="target/ROOT.war"/>
-            <delete dir="/opt/dev/tools/tomcat/site/webapps/ROOT" quiet="true"/>
-            <delete dir="/opt/dev/tools/tomcat/site/webapps/ROOT.war" quiet="true"/>
-            <copy todir="/opt/dev/tools/tomcat/site/webapps" file="${warFile}" overwrite="true"/>
-            <echo message="${warFile}"/>
-			<exec executable="gnome-terminal" spawn="true">
-			    <arg line="--window-with-profile=SITE --geometry=200x60 -e '/opt/dev/projects/ATEC/Rayondart/build-env/build-script/dev/rayondart/startRdrSite.sh'" />
-			 </exec>
-        </target>
-	
-	     <target name="build-and-deploy-bazar" depends="build-app">
-	         
-	            <echo message="/opt/dev/tools/tomcat/site"/>
-	            <property name="warFile" location="target/ROOT.war"/>
-	            <delete dir="/opt/dev/tools/tomcat/site/webapps/ROOT" quiet="true"/>
-	            <delete dir="/opt/dev/tools/tomcat/site/webapps/ROOT.war" quiet="true"/>
-	            <copy todir="/opt/dev/tools/tomcat/site/webapps" file="${warFile}" overwrite="true"/>
-	            <echo message="${warFile}"/>
-	     </target>
-	    
-		<!-- End of Deploy to Tomcat -->
+
 
 	<!-- Export JSP To Tomcat server -->
 		<target name="sync-ressources-with-tomcat">
 			       <echo message="syn  html ressources files with webapp.." />
-			         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/WEB-INF/templates" includeEmptyDirs="true" overwrite="true">
+			         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/WEB-INF/templates" includeEmptyDirs="true" overwrite="true">
 			            <fileset dir="src/main/webapp/WEB-INF/templates"></fileset>
 			         </sync>
 			        <echo message="end  syn  html ressources files with webapp.." />
 			        
 			        <echo message="syn all css ressources files with webapp" />
-			         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/css" includeEmptyDirs="true" overwrite="true">
+			         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/css" includeEmptyDirs="true" overwrite="true">
 			            <fileset dir="src/main/webapp/css"></fileset>
 			         </sync>
 			        <echo message="end  syn css  ressources files with webapp.." />
 			        
 			         <echo message="syn all font ressources files with webapp" />
-			         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/fonts" includeEmptyDirs="true" overwrite="true">
+			         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/fonts" includeEmptyDirs="true" overwrite="true">
 			            <fileset dir="src/main/webapp/fonts"></fileset>
 			         </sync>
 			        <echo message="end  syn font ressources files with webapp.." />
 			        
 			         <echo message="syn all js ressources files with webapp" />
-			         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/js" includeEmptyDirs="true" overwrite="true">
+			         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/js" includeEmptyDirs="true" overwrite="true">
 			            <fileset dir="src/main/webapp/js"></fileset>
 			         </sync>
 			        <echo message="end  syn js ressources files with webapp.." />
 					
-			         <echo message="syn all lib ressources files with webapp" />
-			         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/lib" includeEmptyDirs="true" overwrite="true">
+			        <!-- <echo message="syn all lib ressources files with webapp" />
+			         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/lib" includeEmptyDirs="true" overwrite="true">
 			            <fileset dir="src/main/webapp/lib"></fileset>
 			         </sync>
 			        <echo message="end  syn lib ressources files with webapp.." />
-			        
+			        -->
 			        
 			         <echo message="syn all img ressources files with webapp" />
-			         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/img" includeEmptyDirs="true" overwrite="true">
+			         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/img" includeEmptyDirs="true" overwrite="true">
 			            <fileset dir="src/main/webapp/img"></fileset>
 			         </sync>
 			        <echo message="end  syn img ressources files with webapp.." />
 			
 			                     <echo message="syn all images ressources files with webapp" />
-						         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/images" includeEmptyDirs="true" overwrite="true">
+						         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/images" includeEmptyDirs="true" overwrite="true">
 						            <fileset dir="src/main/webapp/images"></fileset>
 						         </sync>
 						        <echo message="end  syn images ressources files with webapp.." />
 						
 			        
 			      <!--  <echo message="syn all less ressources files with webapp" />
-			         <sync todir="/opt/dev/tools/tomcat/site/webapps/ROOT/less" includeEmptyDirs="true" overwrite="true">
+			         <sync todir="/opt/dev/projects/confesser/DemoSite/site/target/mycompany/less" includeEmptyDirs="true" overwrite="true">
 			            <fileset dir="src/main/webapp/less"></fileset>
 			         </sync>
 			        <echo message="end  syn less ressources files with webapp.." />-->
@@ -213,130 +90,5 @@
 		<!-- End of Export JSP To Tomcat server -->
 	
 
-	<target name="build-create-sql">
-		<!--
-	You will need to run a mvn install on your project before attempting to execute this task.
-	Also, you will likely need to assign additional heap space to your ANT process. A setting
-	of -XX:MaxPermSize=256M -Xmx512M should be sufficient.
-	-->
-		<mkdir dir="target/sql/create" />
-		<artifact:pom id="myPom" file="pom.xml" />
-		<artifact:dependencies filesetId="pomDeps" pomRefId="myPom" useScope="compile" />
-		<property name="baseTarget" location="target/${myPom.build.finalName}/WEB-INF" />
-		<fileset id="libDir" dir="${baseTarget}/lib" />
-		<path id="build.runtime.classpath">
-			<!--There are some additional libraries needed at compile time that are not included
-	in WEB-INF/lib - find those libraries via a difference algorithm-->
-			<restrict>
-				<difference>
-					<fileset refid="pomDeps" />
-					<intersect>
-						<fileset refid="pomDeps" />
-						<fileset refid="libDir" />
-					</intersect>
-				</difference>
-				<rsel:not>
-					<rsel:name name="**/*.pom" />
-				</rsel:not>
-			</restrict>
-			<!--Add the lib directory to get all the dependencies required for the demo app-->
-			<fileset refid="libDir" />
-			<dirset dir="src/main/resources" />
-			<!--Add the classes directory in the war project, if required-->
-			<!--<pathelement location="${baseTarget}/classes"/>-->
-		</path>
-		<!--If the war project does not contain custom entities (best practice), then it is not necessary to include application context from the WEB-INF directory-->
-		<!--<property name="my.app.context" location="src/main/webapp/WEB-INF/applicationContext.xml"/>-->
-		<taskdef name="hibernatetool" classname="org.broadleafcommerce.common.util.sql.HibernateToolTask" classpathref="build.runtime.classpath" />
-		<hibernatetool destDir="target/sql/create" combinePersistenceUnits="false" refineFileNames="true">
-			<classPathApplicationContext path="bl-framework-web-applicationContext.xml" />
-			<!--add in additional persistence configuration related to the framework -->
-			<classPathApplicationContext path="bl-framework-applicationContext-persistence.xml" />
-			<!--add in additional persistence configuration related to common -->
-			<classPathApplicationContext path="bl-common-applicationContext-persistence.xml" />
-			<classPathApplicationContext path="bl-fake-applicationContext-ant.xml" />
-			<!--add in additional persistence configuration related to the cms -->
-			<classPathApplicationContext path="bl-cms-contentClient-applicationContext.xml" />
-			<classPathApplicationContext path="bl-cms-contentCreator-applicationContext.xml" />
-			<classPathApplicationContext path="bl-open-admin-contentClient-applicationContext.xml" />
-			<!--add in additional persistence configuration related to the profile -->
-			<classPathApplicationContext path="bl-profile-applicationContext-persistence.xml" />
-			<!--add in additional persistence configuration for our core -->
-			<classPathApplicationContext path="applicationContext.xml" /> 
-			<!--see description for my.app.context above -->
-			<fileSystemApplicationContext path="src/main/webapp/WEB-INF/applicationContext.xml" />
-			<!--select the dialects and persistence units to export-->
-			<jpaconfiguration persistenceUnit="blPU" dialect="${ant.hibernate.sql.ddl.dialect}" />
-			<jpaconfiguration persistenceUnit="blSecurePU" dialect="${ant.hibernate.sql.ddl.dialect}" />
-			<jpaconfiguration persistenceUnit="blCMSStorage" dialect="${ant.hibernate.sql.ddl.dialect}" />
-			<!--other required elements-->
-			<classpath refid="build.runtime.classpath" />
-			<hbm2ddl export="false" update="false" create="true" />
-		</hibernatetool>
-	</target>
-	<target name="build-update-sql">
-		<!--
-	You will need to run a mvn install on your project before attempting to execute this task.
-	Also, you will likely need to assign additional heap space to your ANT process. A setting
-	of -XX:MaxPermSize=256M -Xmx512M should be sufficient.
-	-->
-		<mkdir dir="target/sql/update" />
-		<artifact:pom id="myPom" file="pom.xml" />
-		<artifact:dependencies filesetId="pomDeps" pomRefId="myPom" useScope="compile" />
-		<property name="baseTarget" location="target/${myPom.build.finalName}/WEB-INF" />
-		<fileset id="libDir" dir="${baseTarget}/lib" />
-		<path id="build.runtime.classpath">
-			<!--There are some additional libraries needed at compile time that are not included
-	in WEB-INF/lib - find those libraries via a difference algorithm-->
-			<restrict>
-				<difference>
-					<fileset refid="pomDeps" />
-					<intersect>
-						<fileset refid="pomDeps" />
-						<fileset refid="libDir" />
-					</intersect>
-				</difference>
-				<rsel:not>
-					<rsel:name name="**/*.pom" />
-				</rsel:not>
-			</restrict>
-			<!--Add the lib directory to get all the dependencies required for the demo app-->
-			<fileset refid="libDir" />
-			<dirset dir="src/main/resources" />
-			<!--Add the classes directory in the war project, if required-->
-			<!--<pathelement location="${baseTarget}/classes"/>-->
-		</path>
-		<!--If the war project does not contain custom entities (best practice), then it is not necessary to include application context from the WEB-INF directory-->
-		<!--<property name="my.app.context" location="src/main/webapp/WEB-INF/applicationContext.xml"/>-->
-		<taskdef name="hibernatetool" classname="org.broadleafcommerce.common.util.sql.HibernateToolTask" classpathref="build.runtime.classpath" />
-		<hibernatetool destDir="target/sql/update" combinePersistenceUnits="false" refineFileNames="true">
-			<!--add in additional persistence configuration related to the framework -->
-			<classPathApplicationContext path="bl-framework-applicationContext-persistence.xml" />
-			<!--add in additional persistence configuration related to common -->
-			<classPathApplicationContext path="bl-common-applicationContext-persistence.xml" />
-			<classPathApplicationContext path="bl-fake-applicationContext-ant.xml" />
-			<!--add in additional persistence configuration related to the cms -->
-			<classPathApplicationContext path="bl-cms-contentClient-applicationContext.xml" />
-			<classPathApplicationContext path="bl-cms-contentCreator-applicationContext.xml" />
-			<classPathApplicationContext path="bl-open-admin-contentClient-applicationContext.xml" />
-			<!--add in additional persistence configuration related to the profile -->
-			<classPathApplicationContext path="bl-profile-applicationContext-persistence.xml" />
-			<!--add in additional persistence configuration for our core -->
-			<classPathApplicationContext path="applicationContext.xml" />
-			<!--see description for my.app.context above -->
-			<fileSystemApplicationContext path="src/main/webapp/WEB-INF/applicationContext.xml" />
-			<!--select the dialects and persistence units to export-->
-			<jpaconfiguration persistenceUnit="blPU" dialect="${ant.hibernate.sql.ddl.dialect}" url="${ant.blPU.url}" userName="${ant.blPU.userName}" password="${ant.blPU.password}" driverClassName="${ant.blPU.driverClassName}" />
-			<jpaconfiguration persistenceUnit="blSecurePU" dialect="${ant.hibernate.sql.ddl.dialect}" url="${ant.blSecurePU.url}" userName="${ant.blSecurePU.userName}" password="${ant.blSecurePU.password}" driverClassName="${ant.blSecurePU.driverClassName}" />
-			<jpaconfiguration persistenceUnit="blCMSStorage" dialect="${ant.hibernate.sql.ddl.dialect}" url="${ant.blCMSStorage.url}" userName="${ant.blCMSStorage.userName}" password="${ant.blCMSStorage.password}" driverClassName="${ant.blCMSStorage.driverClassName}" />
-			<!--other required elements-->
-			<classpath refid="build.runtime.classpath" />
-			<hbm2ddl export="false" update="true" create="false" />
-		</hibernatetool>
-	</target>
-
-
-
-
-
+	
 </project>
