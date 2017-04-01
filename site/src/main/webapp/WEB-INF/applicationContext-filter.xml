@@ -33,8 +33,8 @@
                resourceUrlEncodingFilter,
                blRequestFilter,
                blCustomerStateFilter,
-               blTranslationFilter,
                blCartStateFilter,
+               blTranslationFilter,
                blURLHandlerFilter"/>
         </sec:filter-chain-map>
     </bean>

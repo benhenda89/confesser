@@ -3,38 +3,32 @@
         <title>Login</title>
     </head>
     
-    <div id="login">
-        <h3><span th:utext="#{login.loginToAccount}">Login to Your Account</span></h3>
-        <p><span th:utext="#{login.alreadyMember}">Already a member? Sign in using the form below</span>.</p>
-        
-        <span class="error" th:if="${param.error}">
-            <p><span th:utext="#{login.noMatchTryAgain}">The e-mail address and/or password entered do not match our records.  Please try again</span></p>
-        </span>
+<!--     <div class="pen-title"> -->
+<!-- 	  <h1>Login to Your Account</h1> -->
+<!-- 	</div> -->
 
-        <div class="clearfix">
-            <blc:form th:action="@{/login_post.htm}" method="post">
-                <input type="hidden" name="successUrl" th:if="${successUrl}" th:value="${successUrl}"/>
-                
-                <div class="form50">
-                    <label for="j_username"><span th:utext="#{login.email}">Email</span></label>
-                    <input type="email" name="j_username" th:class="${param.error} ? 'field50 fieldError' : 'field50'" />
-                </div>
-                
-                <div class="form50">
-                    <label for="j_password"><span th:utext="#{login.password}">Password</span></label>
-                    <input type="password" name="j_password" th:class="${param.error} ? 'field50 fieldError' : 'field50'" />
-                </div>
-                
-                <div class="login_register">
-                    <input class="login_button big red" type="submit" th:value="#{login.login}"/>
-                </div>
-                
-                <div class="login_register_alt_links">
-                    <a class="account" th:href="@{/register}"><span th:utext="#{login.register}">Register</span></a>
-                    <br/>
-                    <a class="account" th:href="@{/login/forgotPassword}"><span th:utext="#{login.forgotPassword}">Forgot Password</span></a>
-                </div>
-            </blc:form>
-        </div>
-    </div>
+	<div class="login-container login-body">
+	  <div class="card"></div>
+	  <div class="card">
+	    <h1 class="title">Login</h1>
+	    <blc:form th:action="@{/login_post.htm}" method="post">
+	       <input type="hidden" name="successUrl" th:if="${successUrl}" th:value="${successUrl}"/>
+	      <div class="input-container">
+	        <input type="#{type}" id="#{label}" required="required"/>
+	        <label for="#{label}">Username</label>
+	        <div class="bar"></div>
+	      </div>
+	      <div class="input-container">
+	        <input type="password" id="#{label}" required="required"/>
+	        <label for="#{label}">Password</label>
+	        <div class="bar"></div>
+	      </div>
+	      <div class="button-container">
+	        <button><span>Go</span></button>
+	      </div>
+	      <div class="footer"><a th:href="@{/register}">SignUp</a></div>
+	      <div class="footer"><a th:href="@{/login/forgotPassword}">Forgot your password?</a></div>
+	    </blc:form>
+	  </div>
+	</div>
 </div>

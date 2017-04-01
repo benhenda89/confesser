@@ -1,41 +1,59 @@
 <footer class="group">
-    <div id="left_content">
-        <h4><span th:utext="#{footer.delivering}">Delivering Texas Sized Heat</span></h4>
-        &copy; <span th:utext="#{footer.copyrightHC}">Copyright 2013 The Heat Clinic</span><br />
-        <a href=""><span th:utext="#{footer.privacyPolicy}">Privacy Policy</span></a>
-    </div>
-    <div id="right_content">
-        <h4><span th:utext="#{footer.since1978}">Since Nineteen Seventy Eight</span></h4>
-        <span th:utext="#{footer.allRights}">All Rights Reserved</span>.<br />
-        <a href=""><span th:utext="#{footer.customerService}">Customer Service</span></a>
-    </div>
-    <div id="blc_brand">
-        <a href="http://www.broadleafcommerce.com"  >
-            <img blc:src="@{/img/broadleaf-seal.png}" alt="Broadleaf Commerce" />
-            <h4><span th:utext="#{footer.branding.poweredByBLC}">Powered by Broadleaf Commerce</span></h4>
-            <br />
-        </a>
-        <p>&copy; <span th:utext="#{footer.branding.copyrightBLC}">Copyright 2013 Broadleaf Commerce</span><br /></p>
-    </div>
+    <footer class="text-center">
+        <div 
+        class="footer-above">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col col-md-12">
+                      <p>
+                        Explicitement <b>Confesser</b> vous aide à identifier vos faiblesses et vos forces en obtenant des critiques de vos employés et amis dans le plus grand secret à l'insu de l'expéditeur.
+                      </p>
 
-    <div th:remove="all">
-        <!--
-            Include this template at the bottom of a page (automatically included by partials/footer.html
-            to gain access to jQuery and other plugins used throughout the site.
-            
-            We will attempt to load the jQuery library from Google's CDN, but fallback on our own provided
-            jQuery if necessary.
-            
-            Other than this jQuery loading script, no other scripts should be defined inline.
-        -->
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; confesser.me
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
     </div>
     
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script th:inline="text">
         //<![CDATA[
         window.jQuery || document.write('<script src="[[@{/js/lib/jquery-1.9.1.js}]]"><\/script>');
         //]]>
     </script>
+    
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/freelancer.min.js"></script>
     
     <blc:bundle name="lib.js" 
                 mapping-prefix="/js/"
