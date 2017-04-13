@@ -52,63 +52,6 @@
         <constructor-arg value="solrhome"/>
     </bean>
 
-    <!--A simple quartz jobs for enabling cart and customer purge functionality. Uncomment the following quartz configurations-->
-    <!--to activate this functionality (Also, uncomment the 'purgeCartTrigger' and 'purgeCustomerTrigger' configured under SchedulerFactoryBean.-->
-    <!--Note, you can edit the configuration to customize the functionality. Take a look-->
-    <!--at PurgeCartVariableNames and PurgeCustomerVariableNames for a list of available params and ResourcePurgeService for additional information. Also,-->
-    <!--for custom resource retrieval beyond the scope of the existing implementation, ResourcePurgeServiceImpl can be subclassed-->
-    <!--to provide custom resource retrieval functionality. Please see Quartz documentation for more advanced configuration,-->
-    <!--such as clustering.-->
-
-    <!--<bean id="purgeCartConfig" class="org.springframework.beans.factory.config.MapFactoryBean">-->
-        <!--<property name="sourceMap">-->
-            <!--<map>-->
-                <!--<entry key="SECONDS_OLD" value="2592000"/>-->
-                <!--<entry key="STATUS" value="IN_PROCESS"/>-->
-            <!--</map>-->
-        <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="purgeCartJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-        <!--<property name="targetObject" ref="blResourcePurgeService" />-->
-        <!--<property name="targetMethod" value="purgeCarts" />-->
-        <!--<property name="arguments">-->
-            <!--<list>-->
-                <!--<ref bean="purgeCartConfig"/>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="purgeCartTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">-->
-        <!--<property name="jobDetail" ref="purgeCartJobDetail" />-->
-        <!--<property name="startDelay" value="30000" />-->
-        <!--<property name="repeatInterval" value="86400000" />-->
-    <!--</bean>-->
-
-    <!--<bean id="purgeCustomerConfig" class="org.springframework.beans.factory.config.MapFactoryBean">-->
-        <!--<property name="sourceMap">-->
-            <!--<map>-->
-                <!--<entry key="SECONDS_OLD" value="2592000"/>-->
-                <!--<entry key="IS_REGISTERED" value="false"/>-->
-            <!--</map>-->
-        <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="purgeCustomerJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-        <!--<property name="targetObject" ref="blResourcePurgeService" />-->
-        <!--<property name="targetMethod" value="purgeCustomers" />-->
-        <!--<property name="arguments">-->
-            <!--<list>-->
-                <!--<ref bean="purgeCustomerConfig"/>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="purgeCustomerTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">-->
-        <!--<property name="jobDetail" ref="purgeCustomerJobDetail" />-->
-        <!--<property name="startDelay" value="30000" />-->
-        <!--<property name="repeatInterval" value="86400000" />-->
-    <!--</bean>-->
 
     <!-- If you want to use a standalone solr server for at least one environment, uncomment the following -->
     <!-- three beans and set solr.source.primary, solr.source.reindex, and solr.source.admin in the property file -->

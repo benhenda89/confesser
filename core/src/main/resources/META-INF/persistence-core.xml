@@ -6,6 +6,10 @@
              
     <persistence-unit name="blPU" transaction-type="RESOURCE_LOCAL">
         <non-jta-data-source>jdbc/web</non-jta-data-source>
+        
+        <mapping-file>jpa/customerMessage.orm.xml</mapping-file>
+        
+        <class>com.confesser.core.customer.message.domain.CnfCustomerMessageImpl</class>
         <exclude-unlisted-classes/>
     </persistence-unit>
     

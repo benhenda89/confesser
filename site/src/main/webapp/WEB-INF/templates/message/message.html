@@ -2,35 +2,44 @@
     <head>
         <title>Contact Us</title>
     </head>
-    
-    <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                <img data-action="zoom" class="panel-profile-img" src="img/avatar.png"></img>
-                    <h5><i>Hafedh Ben Henda</i></h5>
-                    <!-- <hr class="star-primary"> -->
-                </div>
+    <div class="clearfix"></div>
+    <div class="container message-container">
+
+     <div class="col-md-9 message-block">
+<!--         <div class="row card"> -->
+<!--                 <div class="col-lg-12 text-center"> -->
+<!--                     <img data-action="zoom" class="panel-profile-img" src="img/new-email-outline.png"></img> -->
+<!--                 </div> -->
+<!--             </div> -->
+        <div class="growl growl-static">
+            <div class="alert alert-warning alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h5>Confirmer votre email</h5>
+                votre email: <strong class="text-danger">hafedhbenhenda@gmail.com</strong>
+                <br></br>
+                <a href="/Manage/Edit">changer Email</a> | <a href="/Account/SendConfirmation">confirmer</a>
             </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <form name="sentMessage" id="contactForm">
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="message">Message</label>
-                                <textarea rows="5" class="form-control" placeholder="Message" id="message" required="required" data-validation-required-message="Please enter a message."></textarea>
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <br></br>
-                        <div id="success"></div>
-                        <div class="row">
-                            <div class="form-group col-md-12 col-xs-12 text-center">
-                                <button type="submit" class="btn btn-success btn-lg btn-block">Send</button>
-                            </div>
-                        </div>
-                    </form>
+        </div>
+
+    <ul class="list-group media-list media-list-stream">
+        <li class="text-center media list-group-item p-a"><span style="font-size: x-large" class="icon icon-chat"></span>&nbsp;&nbsp;<span style="font-size: x-large">Messages</span></li>
+                            <li id="Message40505093" class="media list-group-item p-a" style="border-top: none">
+
+                <div class="media-body">
+                    <span style="padding-bottom: 5px;" class="pull-right close" onclick="Delete(40505093);return false;" aria-hidden="true">×</span>
+                    <span style="white-space: pre-wrap; word-wrap: break-word; white-space: pre-line; overflow: hidden; display: block;">hhhhhhhhhhhhhhhhhhhhhhh</span><br></br>
+                    <small class="text-muted">
+                        <span data-utcdate="2017-03-31T21:58:17">March 31st 2017, 10:58 pm</span>&nbsp;
+
+                            -&nbsp;<a href="#" aria-hidden="true" onclick="Report(40505093);return false;" style="font-size: smaller">Signaler</a>
+                    </small>
                 </div>
-            </div>
+            </li>
+    </ul>
+
+</div>
         </div>
     
 </div>

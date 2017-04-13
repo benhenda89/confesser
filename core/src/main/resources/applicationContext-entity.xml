@@ -21,4 +21,5 @@
         <!-- This file will contain bean overrides for extensions of Broadleaf entities -->
         <!-- For example, if you have a custom class that extends CustomerImpl, you would note that here -->
         
+    <bean id="com.confesser.core.customer.message.domain.CnfCustomerMessage" class="com.confesser.core.customer.message.domain.CnfCustomerMessageImpl" scope="prototype"/>
 </beans>

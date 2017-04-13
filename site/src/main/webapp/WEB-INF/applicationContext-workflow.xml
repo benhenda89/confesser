@@ -17,13 +17,4 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
 
-    <bean id="blCheckoutWorkflow" class="org.broadleafcommerce.core.workflow.SequenceProcessor">
-        <property name="activities">
-            <list>
-                <!-- This activity should occur at the very end of the checkout workflow, after everything has been executed -->
-                <bean p:order="9999999" class="com.confesser.worklow.checkout.SendOrderConfirmationEmailActivity" />
-            </list>
-        </property>
-    </bean>
-
 </beans>

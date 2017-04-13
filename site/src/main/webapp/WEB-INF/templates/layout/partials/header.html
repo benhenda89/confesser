@@ -14,26 +14,35 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li class="page-scroll">
+                <blc:menu resultVar="menuItems" menuName="Header Nav" />
+                <li class="page-scroll" th:each="menuItem : ${menuItems}">
+                    <a th:href="@{${menuItem.url}}">
+                        <span th:utext="${menuItem.label}"></span>
+                    </a>
+                </li>
+                
+                <li class="page-scroll" th:unless="${customer.loggedIn}">
                     <a th:href="@{/login}">Login</a>
                 </li>
-                <li class="page-scroll">
+                <li class="page-scroll" th:unless="${customer.loggedIn}">
                     <a th:href="@{/register}">Register</a>
                 </li>
+                <li class="page-scroll" th:if="${customer.loggedIn}">
+                    <a th:href="@{/message}">Messages</a>
+                </li>
+
+                <li class="page-scroll">
+				    <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">Account<span>▼</span>
+				    </a>
+				    <ul class="dropdown-menu" role="menu" >
+				      <li><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
+				      <li><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+				    </ul>
+				  </li>
+                
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container-fluid -->
 </nav>
-
-<!-- Header -->
-<header>
-    <div class="" id="maincontent" tabindex="-1">
-        <div class="" style="margin-top: 51px;"> 
-            <div class="image-caroussel">
-                <img class="img-responsive" alt="" src="https://img1.etsystatic.com/site-assets/vesta-homepage-headers-v3/bigstuffed_249253853_2020x335.jpg"></img>
-            </div>
-        </div>
-    </div>
-</header>
